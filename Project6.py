@@ -49,13 +49,14 @@ def method_with_python_function(number: int) -> None:
     pairings = list(enumerate(itertools.combinations(players, 2)))
 
     for round in range(number-1):
+        print(f'\nRound number: {round+1}')
         cache = {}
         for var in range(1,number):
             print(f'\nVariation - {var}')
             played = []
             for index,pairing in pairings:
                 if pairing[0] not in played and pairing[1] not in played and index not in cache:
-                    print(f'Round number {round+1}: Playing {pairing[0]} and {pairing[1]}')
+                    print(f'Playing {pairing[0]} and {pairing[1]}')
                     played.extend(pairing)
                     cache[index] = index
                     #print(cache)
@@ -70,13 +71,14 @@ def algebraic_method(number: int) -> None:
     schedules = list(enumerate(schedules,start=1))
     
     for round in range(number-1):
+        print(f'\nRound number: {round+1}')
         cache = {}
         for var in range(1,number):
             print(f'\nVariation - {var}')
             played = []
             for index,pairing in schedules:
                 if pairing[0] not in played and pairing[1] not in played and index not in cache:
-                    print(f'Round number {round+1}: Playing {pairing[0]} and {pairing[1]}')
+                    print(f'Playing {pairing[0]} and {pairing[1]}')
                     played.extend(pairing)
                     cache[index] = index
 
@@ -86,6 +88,7 @@ def method_with_python_function_sec_approach(number: int) -> None:
     pairings = list(enumerate(itertools.combinations(players, 2)))
 
     for round in range(number-1):
+        print(f'\nRound number: {round+1}')
         cache = {}
         for var in range(1,number):
             print(f'\nVariation - {var}')
@@ -93,7 +96,7 @@ def method_with_python_function_sec_approach(number: int) -> None:
             for index,pairing in pairings:
                 if pairing[0] not in played and pairing[1] not in played and index not in cache:
                     if first_var(pairing[0],pairing[1],digit_to_2)or sec_var(pairing[0],pairing[1],digit_to_2):
-                        print(f'Round number {round+1}: Playing {pairing[0]} and {pairing[1]}')
+                        print(f'Playing {pairing[0]} and {pairing[1]}')
                         played.extend(pairing)
                         cache[index] = index
                         
@@ -106,6 +109,7 @@ def algebraic_method_sec_approach(number: int) -> None:
     schedules = list(enumerate(schedules,start=1))
     
     for round in range(number-1):
+        print(f'\nRound number: {round+1}')
         cache = {}
         for var in range(1,number):
             print(f'\nVariation - {var}')
@@ -113,7 +117,7 @@ def algebraic_method_sec_approach(number: int) -> None:
             for index,pairing in schedules:
                 if pairing[0] not in played and pairing[1] not in played and index not in cache:
                     if first_var(pairing[0],pairing[1],digit_to_2)or sec_var(pairing[0],pairing[1],digit_to_2):
-                        print(f'Round number {round+1}: Playing {pairing[0]} and {pairing[1]}')
+                        print(f'Playing {pairing[0]} and {pairing[1]}')
                         played.extend(pairing)
                         cache[index] = index
     

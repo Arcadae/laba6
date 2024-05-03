@@ -1,3 +1,10 @@
+"""
+1 часть – написать программу в соответствии со своим вариантом задания. Написать 2 варианта формирования (алгоритмический и с помощью функций Питона), сравнив по времени их выполнение.
+2 часть – усложнить написанную программу, введя по своему усмотрению в условие минимум одно ограничение на характеристики объектов (которое будет сокращать количество переборов):(Могут играть только два разных по
+чётности номера) и целевую функцию для нахождения оптимального решения:()
+Вариант 20. В шахматном турнире принимают участие N шахматистов, причем каждый из них должен сыграть только одну партию с каждым из остальных. Выведите все возможные расписания турнира.
+"""
+
 import timeit
 import itertools
 
@@ -16,12 +23,12 @@ def digit_to_2(number: int) -> bool:
         return True 
     return False
     
-def first_var(first_dig: bool , sec_dig: bool , digit_to_2) -> bool:
+def first_var(first_dig: int , sec_dig: int , digit_to_2) -> bool:
     if digit_to_2(first_dig) == True and digit_to_2(sec_dig) == False:
         return True 
     return False
 
-def sec_var(first_dig: bool , sec_dig: bool , digit_to_2) -> bool:
+def sec_var(first_dig: int , sec_dig: int , digit_to_2) -> bool:
     if digit_to_2(first_dig) == False and digit_to_2(sec_dig) == True:
         return True 
     return False

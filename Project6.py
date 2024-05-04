@@ -1,7 +1,7 @@
 """
 1 часть – написать программу в соответствии со своим вариантом задания. Написать 2 варианта формирования (алгоритмический и с помощью функций Питона), сравнив по времени их выполнение.
 2 часть – усложнить написанную программу, введя по своему усмотрению в условие минимум одно ограничение на характеристики объектов (которое будет сокращать количество переборов):(Могут играть только два разных по
-чётности номера) и целевую функцию для нахождения оптимального решения:()
+чётности номера) и целевую функцию для нахождения оптимального решения:(optimal_game)
 Вариант 20. В шахматном турнире принимают участие N шахматистов, причем каждый из них должен сыграть только одну партию с каждым из остальных. Выведите все возможные расписания турнира.
 """
 
@@ -130,9 +130,10 @@ def optimal_game(number: int) -> None:
         played = []
         for index,pairing in pairings:
             if pairing[0] not in played and pairing[1] not in played and index not in cache:
-                print(f'Playing {pairing[0]} and {pairing[1]}')
-                played.extend(pairing)
-                cache[index] = index
+                if first_var(pairing[0],pairing[1],digit_to_2)or sec_var(pairing[0],pairing[1],digit_to_2):
+                    print(f'Playing {pairing[0]} and {pairing[1]}')
+                    played.extend(pairing)
+                    cache[index] = index
                         
 def main():
     n = get_integer_value('N = ')

@@ -23,16 +23,6 @@ def digit_to_2(number: int) -> bool:
         return True 
     return False
     
-def first_var(first_dig: int , sec_dig: int , digit_to_2) -> bool:
-    if digit_to_2(first_dig) == True and digit_to_2(sec_dig) == False:
-        return True 
-    return False
-
-def sec_var(first_dig: int , sec_dig: int , digit_to_2) -> bool:
-    if digit_to_2(first_dig) == False and digit_to_2(sec_dig) == True:
-        return True 
-    return False
-
 def time_counter(func):
     def wrapper(*args,**kwargs):
         start_time = timeit.default_timer()
@@ -81,6 +71,16 @@ def algebraic_method(number: int) -> None:
                     print(f'Playing {pairing[0]} and {pairing[1]}')
                     played.extend(pairing)
                     cache[index] = index
+
+def first_var(first_dig: int , sec_dig: int , digit_to_2) -> bool:
+    if digit_to_2(first_dig) == True and digit_to_2(sec_dig) == False:
+        return True 
+    return False
+
+def sec_var(first_dig: int , sec_dig: int , digit_to_2) -> bool:
+    if digit_to_2(first_dig) == False and digit_to_2(sec_dig) == True:
+        return True 
+    return False
 
 @time_counter
 def method_with_python_function_sec_approach(number: int) -> None:

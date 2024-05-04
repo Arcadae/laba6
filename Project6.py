@@ -120,8 +120,20 @@ def algebraic_method_sec_approach(number: int) -> None:
                         print(f'Playing {pairing[0]} and {pairing[1]}')
                         played.extend(pairing)
                         cache[index] = index
-    
-        
+
+def optimal_game(number: int) -> None:
+    players = range(1, number+1)
+    pairings = list(enumerate(itertools.combinations(players, 2)))
+    cache = {}
+    for round in range(number-1):
+        print(f'\nRound number: {round+1}')
+        played = []
+        for index,pairing in pairings:
+            if pairing[0] not in played and pairing[1] not in played and index not in cache:
+                print(f'Playing {pairing[0]} and {pairing[1]}')
+                played.extend(pairing)
+                cache[index] = index
+                        
 def main():
     n = get_integer_value('N = ')
     method_with_python_function(n)

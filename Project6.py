@@ -78,7 +78,7 @@ def alg_method(n: int) -> list:
     pairs = list(enumerate(pairs, start = 1))
     return pairs
 
-def schedule_constructor(pairs):
+def schedule_constructor(pairs: list) -> int:
     for var in range(3):
         print(f"\t|\Variation No.{var+1}/|\t")
         played_pairs = {}
@@ -97,7 +97,7 @@ def schedule_constructor(pairs):
         
     return(f"The number of possible permutations in the schedule = {n_permutations(pairs)}")
     
-def schedule_constructor_with_limitations(pairs, n):
+def schedule_constructor_with_limitations(pairs: list, n: int) -> int:
     for var in range(3):
         print(f"\t|\Variation No.{var+1}/|\t")
         played_pairs = {}
@@ -130,7 +130,5 @@ def main():
     print('\n')
     print(f"\nTime to complete {method_with_python.__name__} = {method_with_python.__total_time__:.6f} || {alg_method.__name__} = {alg_method.__total_time__:.6f}")
 
-if __name__ == '__main__':
-    main()
 if __name__ == '__main__':
     main()

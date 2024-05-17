@@ -1,12 +1,14 @@
 """
 1 часть – написать программу в соответствии со своим вариантом задания. Написать 2 варианта формирования (алгоритмический и с помощью функций Питона), сравнив по времени их выполнение.
 2 часть – усложнить написанную программу, введя по своему усмотрению в условие минимум одно ограничение на характеристики объектов (которое будет сокращать количество переборов):(Могут играть только два разных по
-чётности номера) и целевую функцию для нахождения оптимального решения:(optimal_game)
+чётности номера) и целевую функцию для нахождения оптимального решения
 Вариант 20. В шахматном турнире принимают участие N шахматистов, причем каждый из них должен сыграть только одну партию с каждым из остальных. Выведите все возможные расписания турнира.
 """
 
+import itertools 
+import random
 import timeit
-import itertools
+import functools
 
 def get_integer_value(txt: str) -> int:
     while True:
@@ -17,61 +19,35 @@ def get_integer_value(txt: str) -> int:
             return value
         except ValueError:
             print(f'This number of people is wrong')
-            
+
+def profile(func):
+    @functools.wraps(func)
+    def inner(*args, **kwargs):
+        start_time = timeit.default_timer()
+        res = func(*args, **kwargs)
+        elapsed_time = timeit.default_timer() - start_time
+        inner.__total_time__ += elapsed_time
+        return res
+    
+    inner.__total_time__ = 0
+    return inner
+
+def swap_random(seq):
+    idx = range(len(seq))
+    i1, i2 = random.sample(idx, 2)
+    seq[i1], seq[i2] = seq[i2], seq[i1]
+    
+def n_permutations(seq: str) -> int:
+    count = 0
+    for i in itertools.product(seq, repeat=2):
+        count += 1 
+    return count
+
 def digit_to_2(number: int) -> bool:
     if number%2==0:
         return True 
     return False
     
-def time_counter(func):
-    def wrapper(*args,**kwargs):
-        start_time = timeit.default_timer()
-        result = func(*args,**kwargs)
-        execution_time = timeit.default_timer() - start_time
-        print(f'\nExecution time for {func.__name__}:',
-        f'{execution_time:.9f} seconds')
-        return result
-    return wrapper
-
-@time_counter
-def method_with_python_function(number: int) -> None:
-    players = range(1, number+1)
-    pairings = list(enumerate(itertools.combinations(players, 2)))
-
-    for round in range(number-1):
-        print(f'\nRound number: {round+1}')
-        cache = {}
-        for var in range(1,number):
-            print(f'\nVariation - {var}')
-            played = []
-            for index,pairing in pairings:
-                if pairing[0] not in played and pairing[1] not in played and index not in cache:
-                    print(f'Playing {pairing[0]} and {pairing[1]}')
-                    played.extend(pairing)
-                    cache[index] = index
-                    #print(cache)
-
-
-@time_counter
-def algebraic_method(number: int) -> None:
-    schedules = []
-    for i in range(1, number + 1):
-        for j in range(i + 1, number + 1):
-             schedules.append((i, j))
-    schedules = list(enumerate(schedules,start=1))
-    
-    for round in range(number-1):
-        print(f'\nRound number: {round+1}')
-        cache = {}
-        for var in range(1,number):
-            print(f'\nVariation - {var}')
-            played = []
-            for index,pairing in schedules:
-                if pairing[0] not in played and pairing[1] not in played and index not in cache:
-                    print(f'Playing {pairing[0]} and {pairing[1]}')
-                    played.extend(pairing)
-                    cache[index] = index
-
 def first_var(first_dig: int , sec_dig: int , digit_to_2) -> bool:
     if digit_to_2(first_dig) == True and digit_to_2(sec_dig) == False:
         return True 
@@ -82,65 +58,79 @@ def sec_var(first_dig: int , sec_dig: int , digit_to_2) -> bool:
         return True 
     return False
 
-@time_counter
-def method_with_python_function_sec_approach(number: int) -> None:
-    players = range(1, number+1)
-    pairings = list(enumerate(itertools.combinations(players, 2)))
+def is_different_parity(first_dig: int , sec_dig: int) -> bool:
+    if first_var(first_dig, sec_dig, digit_to_2) or sec_var(first_dig, sec_dig, digit_to_2):
+        return True
+    return False
 
-    for round in range(number-1):
-        print(f'\nRound number: {round+1}')
-        cache = {}
-        for var in range(1,number):
-            print(f'\nVariation - {var}')
+@profile
+def method_with_python(n: int) -> list:
+    players = range(1,n+1)
+    pairs = list(enumerate(itertools.combinations(players, 2), start = 1))
+    return pairs
+
+@profile    
+def alg_method(n: int) -> list:
+    pairs = []
+    for i in range(1, n+ 1):
+        for j in range(i + 1, n + 1):
+             pairs.append((i, j))
+    pairs = list(enumerate(pairs, start = 1))
+    return pairs
+
+def schedule_constructor(pairs):
+    for var in range(3):
+        print(f"\t|\Variation No.{var+1}/|\t")
+        played_pairs = {}
+        round = 0
+        while len(played_pairs) != len(pairs):
+            round += 1
+            print(f"||Round {round}||")
             played = []
-            for index,pairing in pairings:
-                if pairing[0] not in played and pairing[1] not in played and index not in cache:
-                    if first_var(pairing[0],pairing[1],digit_to_2)or sec_var(pairing[0],pairing[1],digit_to_2):
-                        print(f'Playing {pairing[0]} and {pairing[1]}')
-                        played.extend(pairing)
-                        cache[index] = index
-                        
-@time_counter
-def algebraic_method_sec_approach(number: int) -> None:
-    schedules = []
-    for i in range(1, number + 1):
-        for j in range(i + 1, number + 1):
-             schedules.append((i, j))
-    schedules = list(enumerate(schedules,start=1))
+            for index, pair in pairs:
+                if pair[0] not in played and pair[1] not in played and index not in played_pairs:
+                    played.extend(pair)
+                    print(f"<<Couple::{', '.join(str(x) for x in played[-2:])}>>", end = "  ")
+                    played_pairs[index] = index
+            print()
+        swap_random(pairs)
+        
+    return(f"The number of possible permutations in the schedule = {n_permutations(pairs)}")
     
-    for round in range(number-1):
-        print(f'\nRound number: {round+1}')
-        cache = {}
-        for var in range(1,number):
-            print(f'\nVariation - {var}')
+def schedule_constructor_with_limitations(pairs, n):
+    for var in range(3):
+        print(f"\t|\Variation No.{var+1}/|\t")
+        played_pairs = {}
+        round = 0
+        while round != n-2:
+            round += 1
+            print(f"||Round {round}||")
             played = []
-            for index,pairing in schedules:
-                if pairing[0] not in played and pairing[1] not in played and index not in cache:
-                    if first_var(pairing[0],pairing[1],digit_to_2)or sec_var(pairing[0],pairing[1],digit_to_2):
-                        print(f'Playing {pairing[0]} and {pairing[1]}')
-                        played.extend(pairing)
-                        cache[index] = index
-
-def optimal_game(number: int) -> None:
-    players = range(1, number+1)
-    pairings = list(enumerate(itertools.combinations(players, 2)))
-    cache = {}
-    for round in range(number-1):
-        print(f'\nRound number: {round+1}')
-        played = []
-        for index,pairing in pairings:
-            if pairing[0] not in played and pairing[1] not in played and index not in cache:
-                if first_var(pairing[0],pairing[1],digit_to_2)or sec_var(pairing[0],pairing[1],digit_to_2):
-                    print(f'Playing {pairing[0]} and {pairing[1]}')
-                    played.extend(pairing)
-                    cache[index] = index
-                        
+            for index, pair in pairs:
+                if pair[0] not in played and pair[1] not in played and index not in played_pairs:
+                    if is_different_parity(pair[0], pair[1]):
+                        played.extend(pair)
+                        print(f"<<Couple::{', '.join(str(x) for x in played[-2:])}>>", end = "  ")
+                        played_pairs[index] = index
+            print()
+        swap_random(pairs)
+        
+    return(f"The number of possible permutations in the schedule = {n_permutations(played_pairs)}")   
+        
 def main():
     n = get_integer_value('N = ')
-    method_with_python_function(n)
-    method_with_python_function_sec_approach(n)
-    algebraic_method(n)
-    algebraic_method_sec_approach(n)
-    
+    print("Schedules using the itertools method: ")
+    print(f"{schedule_constructor(method_with_python(n))}")
+    print('\n')
+    print("Schedules using the algebraic method: ")
+    print(f"{schedule_constructor(alg_method(n))}")
+    print('\n')
+    print(f"Probably the optimal schedule:")
+    print(f"{schedule_constructor_with_limitations(method_with_python(n), n)}")
+    print('\n')
+    print(f"\nTime to complete {method_with_python.__name__} = {method_with_python.__total_time__:.6f} || {alg_method.__name__} = {alg_method.__total_time__:.6f}")
+
+if __name__ == '__main__':
+    main()
 if __name__ == '__main__':
     main()

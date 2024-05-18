@@ -98,22 +98,19 @@ def schedule_constructor(pairs: list) -> int:
     return(f"The number of possible permutations in the schedule = {n_permutations(pairs)}")
     
 def schedule_constructor_with_limitations(pairs: list, n: int) -> int:
-    for var in range(3):
-        print(f"\t|\Variation No.{var+1}/|\t")
-        played_pairs = {}
-        round = 0
-        while round != n-2:
-            round += 1
-            print(f"||Round {round}||")
-            played = []
-            for index, pair in pairs:
-                if pair[0] not in played and pair[1] not in played and index not in played_pairs:
-                    if is_different_parity(pair[0], pair[1]):
-                        played.extend(pair)
-                        print(f"<<Couple::{', '.join(str(x) for x in played[-2:])}>>", end = "  ")
-                        played_pairs[index] = index
-            print()
-        swap_random(pairs)
+    played_pairs = {}
+    round = 0
+    while round != n-2:
+        round += 1
+        print(f"||Round {round}||")
+        played = []
+        for index, pair in pairs:
+            if pair[0] not in played and pair[1] not in played and index not in played_pairs:
+                if is_different_parity(pair[0], pair[1]):
+                    played.extend(pair)
+                    print(f"<<Couple::{', '.join(str(x) for x in played[-2:])}>>", end = "  ")
+                    played_pairs[index] = index
+        print()
         
     return(f"The number of possible permutations in the schedule = {n_permutations(played_pairs)}")   
         
